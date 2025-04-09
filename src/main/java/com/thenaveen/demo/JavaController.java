@@ -63,4 +63,9 @@ public class JavaController {
     public String getConversation(@RequestParam(defaultValue = "what is the meaning of life?") String message, @RequestParam(defaultValue = "default") String convId){
         return client.prompt().user(message).advisors(as -> as.param(MessageChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY, convId)).call().content();
     }
+
+    @GetMapping("/translate")
+    public String getTranslation(@RequestParam(defaultValue = "what is the meaning of life?") String message, @RequestParam(defaultValue = "English") String language, @RequestParam(defaultValue = "false") String targetLang){
+        return client.prompt().system(s -> s.text("You respond in the language of {language}.").param("language", language)).user(message).call().content();
+    }
 }
