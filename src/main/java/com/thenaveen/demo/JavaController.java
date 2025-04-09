@@ -1,7 +1,9 @@
 package com.thenaveen.demo;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.image.ImageModel;
 import org.springframework.ai.openai.audio.speech.SpeechModel;
@@ -23,7 +25,7 @@ public class JavaController {
     private final static String DIR_OUT = "Users/naveenkumarlakkaram/files/in";
 
     public JavaController(ChatClient.Builder builder, SpeechModel speechModel, ImageModel imageModel, VectorStore vectorStore){
-        this.client = builder.build();
+        this.client = builder.defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory(), "default", 10)).build();
         this.speechModel = speechModel;
         this.imageModel = imageModel;
         this.vectorStore = vectorStore;
