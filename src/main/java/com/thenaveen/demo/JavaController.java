@@ -58,4 +58,9 @@ public class JavaController {
     public String getResponseFromTemplate(@RequestParam String type, @RequestParam String topic){
         return client.prompt().user(u -> u.text("Create a {type} about {topic}, limit to 100 words").param("type", type).param("topic", topic)).call().content();
     }
+
+    @GetMapping("/conversation")
+    public String getConversation(@RequestParam(defaultValue = "what is the meaning of life?") String message, @RequestParam(defaultValue = "default") String convId){
+        return client.prompt().user(message).advisors(as -> as.param(MessageChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY, convId)).call().content();
+    }
 }
